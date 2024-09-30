@@ -1,0 +1,5 @@
+{
+    "dependencies": {
+        "pa11y-ci": "github:jk-oster/pa11y-ci"
+    }
+}
