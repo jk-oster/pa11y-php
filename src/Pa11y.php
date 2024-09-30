@@ -3,14 +3,13 @@
 namespace JkOster\Pa11y;
 
 use JkOster\Pa11y\Exceptions\CouldNotReadOutputJson;
-use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
-class Pa11y {
-
-    public function __construct(protected string $url) {
-    }
+class Pa11y
+{
+    public function __construct(protected string $url) {}
 
     protected array $options = [];
 
@@ -22,7 +21,7 @@ class Pa11y {
     protected array $requiredOptions = [
         'reporter' => 'json',
         'config' => './pa11y.config.json',
-        'level' => 'none'
+        'level' => 'none',
     ];
 
     protected int $timeoutInSeconds = 300;
@@ -30,12 +29,14 @@ class Pa11y {
     public function processTimeout(int $sec): self
     {
         $this->timeoutInSeconds = $sec;
+
         return $this;
     }
 
     public function setOption(string $option, $value = null): self
     {
         $this->options[$option] = $value;
+
         return $this;
     }
 
@@ -113,7 +114,7 @@ class Pa11y {
 
         foreach ($options as $option => $value) {
             $command[] = '--'.$option;
-            if (!is_null($value)) {
+            if (! is_null($value)) {
                 $command[] = $value;
             }
         }
@@ -126,17 +127,17 @@ class Pa11y {
         $arguments = $this->commandArgs();
 
         $command = [
-            (new ExecutableFinder())->find('pa11y', 'pa11y', [
-                __DIR__ . '/../node_modules/bin',
+            (new ExecutableFinder)->find('pa11y', 'pa11y', [
+                __DIR__.'/../node_modules/bin',
                 '/usr/local/bin',
                 '/opt/homebrew/bin',
             ]),
-            ...$arguments
+            ...$arguments,
         ];
 
         $process = new Process(
             command: $command,
-            cwd: __DIR__ . '/..',
+            cwd: __DIR__.'/..',
             timeout: $this->timeoutInSeconds,
         );
 

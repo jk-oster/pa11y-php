@@ -2,10 +2,10 @@
 
 namespace JkOster\Pa11y\Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use JkOster\Pa11y\Pa11yCi;
 use JkOster\Pa11y\Pa11yCiResult;
 use JkOster\Pa11y\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class Pa11yCiTest extends TestCase
 {
@@ -64,7 +64,7 @@ class Pa11yCiTest extends TestCase
     public function testPa11yCiWithJsonConfig()
     {
         $command = Pa11yCi::fromUrls(['https://laravel.com']);
-            // ->config('{"threshold": 99999999, "urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none","includeWarnings": true,"includeNotices": true, "reporters": ["json"]}}');
+        // ->config('{"threshold": 99999999, "urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none","includeWarnings": true,"includeNotices": true, "reporters": ["json"]}}');
 
         $results = $command->run();
         $this->assertInstanceOf(Pa11yCiResult::class, $results);
@@ -86,7 +86,7 @@ class Pa11yCiTest extends TestCase
     public function testPa11yCiWithJsonConfigAndFileOutput()
     {
         $command = Pa11yCi::fromUrls(['https://laravel.com']);
-            // ->config('{"threshold": 99999999,"urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none", "includeWarnings": true,"includeNotices": true, "reporters": [["json", {"fileName": "./results.json"}]]}}');
+        // ->config('{"threshold": 99999999,"urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none", "includeWarnings": true,"includeNotices": true, "reporters": [["json", {"fileName": "./results.json"}]]}}');
 
         $results = $command->run();
         $this->assertInstanceOf(Pa11yCiResult::class, $results);

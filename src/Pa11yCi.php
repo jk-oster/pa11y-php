@@ -2,15 +2,15 @@
 
 namespace JkOster\Pa11y;
 
-use JkOster\Pa11y\Exceptions\CouldNotReadOutputJson;
 use Illuminate\Support\Arr;
-use Symfony\Component\Process\ExecutableFinder;
+use JkOster\Pa11y\Exceptions\CouldNotReadOutputJson;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\ExecutableFinder;
 use Symfony\Component\Process\Process;
 
-class Pa11yCi {
-
-    public function __construct(protected array $urls) 
+class Pa11yCi
+{
+    public function __construct(protected array $urls)
     {
         $this->urls($this->urls);
     }
@@ -19,7 +19,7 @@ class Pa11yCi {
 
     protected bool $deleteTempFiles = true;
 
-    public static function fromUrls(array  $urls): Pa11yCi
+    public static function fromUrls(array $urls): Pa11yCi
     {
         return new Pa11yCi($urls);
     }
@@ -35,16 +35,16 @@ class Pa11yCi {
             'timeout' => 10000,
             'chromeLaunchConfig' => [
                 'args' => [
-                    '--no-sandbox'
+                    '--no-sandbox',
                 ],
                 'headless' => true,
-                'ignoreHTTPSErrors' => true
+                'ignoreHTTPSErrors' => true,
             ],
             'viewport' => [
                 'width' => 1280,
                 'height' => 1024,
                 'deviceScaleFactor' => 1,
-                'isMobile' => false
+                'isMobile' => false,
             ],
             'level' => 'none',
             'includeWarnings' => true,
@@ -79,11 +79,13 @@ class Pa11yCi {
     ];
 
     protected int $timeoutInSeconds = 600;
+
     protected bool $debug = false;
 
     public function setOption(string $optionPath, $value = null): self
     {
         Arr::set($this->options, $optionPath, $value);
+
         return $this;
     }
 
@@ -184,7 +186,7 @@ class Pa11yCi {
             'width' => $width,
             'height' => $height,
             'deviceScaleFactor' => $deviceScaleFactor,
-            'isMobile' => $isMobile
+            'isMobile' => $isMobile,
         ]);
     }
 
@@ -213,14 +215,14 @@ class Pa11yCi {
         return $this->setOption('defaults.rootElement', $rootElement);
     }
 
-    public function saveToFile(string $path = null): self
+    public function saveToFile(?string $path = null): self
     {
-        if($path === null) {
+        if ($path === null) {
             $path = tempnam(sys_get_temp_dir(), 'pa11y_');
         }
 
         return $this->setOption('defaults.reporters', [
-            ['json', ['fileName' => $path]]
+            ['json', ['fileName' => $path]],
         ]);
     }
 
@@ -232,34 +234,38 @@ class Pa11yCi {
     public function deleteTempFiles(bool $delete = true): self
     {
         $this->deleteTempFiles = $delete;
+
         return $this;
     }
 
     public function processTimeout(int $sec): self
     {
         $this->timeoutInSeconds = $sec;
+
         return $this;
     }
 
     public function config(array $config): self
     {
         $this->options = array_merge_recursive($this->options, $config);
+
         return $this;
     }
 
     public function debug(bool $debug = true): self
     {
         $this->debug = $debug;
+
         return $this;
     }
 
     public function run(): Pa11yCiResult
     {
         $config = json_encode(array_merge_recursive($this->defaultConfig, $this->options));
-        
+
         $command = [
-            (new ExecutableFinder())->find('pa11y-ci', 'pa11y-ci', [
-                __DIR__ . '/../node_modules/bin',
+            (new ExecutableFinder)->find('pa11y-ci', 'pa11y-ci', [
+                __DIR__.'/../node_modules/bin',
                 '/usr/local/bin',
                 '/opt/homebrew/bin',
             ]),
@@ -269,12 +275,12 @@ class Pa11yCi {
         ];
 
         if ($this->debug) {
-            echo '[DEBUG] running command: "' .implode(' ', $command) . '"' . PHP_EOL;
+            echo '[DEBUG] running command: "'.implode(' ', $command).'"'.PHP_EOL;
         }
 
         $process = new Process(
             command: $command,
-            cwd: __DIR__ . '/..',
+            cwd: __DIR__.'/..',
             timeout: $this->timeoutInSeconds,
         );
 
@@ -282,10 +288,10 @@ class Pa11yCi {
         if (! $process->isSuccessful()) {
             throw new ProcessFailedException($process);
         }
-        
+
         $output = $process->getOutput();
         $result = json_decode($output, true);
-        
+
         if (empty($output)) {
             throw CouldNotReadOutputJson::from(implode(' ', $command), '[empty output]');
         }

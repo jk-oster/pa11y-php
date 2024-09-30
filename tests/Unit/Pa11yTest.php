@@ -2,11 +2,10 @@
 
 namespace JkOster\Pa11y\Tests\Unit;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use JkOster\Pa11y\Pa11y;
 use JkOster\Pa11y\Pa11yResult;
-use JkOster\Pa11y\Support\Arr;
 use JkOster\Pa11y\Tests\TestCase;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class Pa11yTest extends TestCase
 {

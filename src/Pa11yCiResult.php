@@ -5,9 +5,9 @@ namespace JkOster\Pa11y;
 use Illuminate\Support\Arr;
 use JsonSerializable;
 
-class Pa11yCiResult implements JsonSerializable {
-    public function __construct(protected array $rawResults = []) {
-    }
+class Pa11yCiResult implements JsonSerializable
+{
+    public function __construct(protected array $rawResults = []) {}
 
     public function setRawResults(array $rawResults): self
     {
@@ -55,22 +55,22 @@ class Pa11yCiResult implements JsonSerializable {
 
     public function getTotalErrorsCount(): int
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => $acc + $result->getErrorsCount(), 0);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => $acc + $result->getErrorsCount(), 0);
     }
 
     public function getTotalWarningsCount(): int
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => $acc + $result->getWarningsCount(), 0);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => $acc + $result->getWarningsCount(), 0);
     }
 
     public function getTotalNoticesCount(): int
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => $acc + $result->getNoticesCount(), 0);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => $acc + $result->getNoticesCount(), 0);
     }
 
     public function getResultsGroupedByUrl(): array
     {
-        return Arr::map($this->rawResults['results'], fn($result) => new Pa11yResult($result));
+        return Arr::map($this->rawResults['results'], fn ($result) => new Pa11yResult($result));
     }
 
     public function getResultsOfUrl(string $url): Pa11yResult

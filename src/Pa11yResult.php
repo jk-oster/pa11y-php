@@ -5,9 +5,9 @@ namespace JkOster\Pa11y;
 use Illuminate\Support\Arr;
 use JsonSerializable;
 
-class Pa11yResult implements JsonSerializable {
-    public function __construct(protected array $rawResults = []) {
-    }
+class Pa11yResult implements JsonSerializable
+{
+    public function __construct(protected array $rawResults = []) {}
 
     // rawResults JSON Output Example
     // [
@@ -59,17 +59,17 @@ class Pa11yResult implements JsonSerializable {
 
     public function getErrors(): array
     {
-        return Arr::where($this->rawResults, fn($issue) => $issue['type'] === 'error');
+        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'error');
     }
 
     public function getWarnings(): array
     {
-        return Arr::where($this->rawResults, fn($issue) => $issue['type'] === 'warning');
+        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'warning');
     }
 
     public function getNotices(): array
     {
-        return Arr::where($this->rawResults, fn($issue) => $issue['type'] === 'notice');
+        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'notice');
     }
 
     public function getErrorsCount(): int
@@ -89,7 +89,7 @@ class Pa11yResult implements JsonSerializable {
 
     public function getIssues(?string $code): ?array
     {
-        return $code === null ? $this->rawResults : Arr::where($this->rawResults, fn($issue) => $issue['code'] === $code);
+        return $code === null ? $this->rawResults : Arr::where($this->rawResults, fn ($issue) => $issue['code'] === $code);
     }
 
     public function getIssueCount(?string $code): int
