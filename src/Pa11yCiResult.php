@@ -75,17 +75,17 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getAllErrors(): array
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => array_merge($acc, $result->getErrors()), []);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getErrors()), []);
     }
 
     public function getAllWarnings(): array
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => array_merge($acc, $result->getWarnings()), []);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getWarnings()), []);
     }
 
     public function getAllNotices(): array
     {
-        return array_reduce($this->getResultsGroupedByUrl(), fn($acc, $result) => array_merge($acc, $result->getNotices()), []);
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getNotices()), []);
     }
 
     public function getResultsOfUrl(string $url): Pa11yResult
