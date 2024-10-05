@@ -18,12 +18,12 @@ class Pa11yCiResult implements JsonSerializable
 
     public function json(): string
     {
-        return json_encode($this->rawResults, JSON_PRETTY_PRINT);
+        return json_encode($this->rawResults ?? [], JSON_PRETTY_PRINT);
     }
 
     public function jsonSerialize(): mixed
     {
-        return json_encode($this->rawResults);
+        return json_encode($this->rawResults ?? []);
     }
 
     public function saveJson(string $path): self
@@ -35,12 +35,12 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getUrlsCount(): int
     {
-        return $this->rawResults['total'];
+        return isset($this->rawResults['total']) ? $this->rawResults['total'] : 0;
     }
 
     public function getPassesCount(): int
     {
-        return $this->rawResults['passes'];
+        return isset($this->rawResults['passes']) ? $this->rawResults['passes'] : 0;
     }
 
     public function getFailuresCount(): int
@@ -50,7 +50,7 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getTotalIssuesCount(): int
     {
-        return $this->rawResults['errors'];
+        return  isset($this->rawResults['errors']) ? $this->rawResults['errors'] : 0;
     }
 
     public function getTotalErrorsCount(): int
@@ -70,7 +70,8 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getResultsGroupedByUrl(): array
     {
-        return Arr::map($this->rawResults['results'], fn ($result) => new Pa11yResult($result));
+
+        return Arr::map(isset($this->rawResults['results']) ? $this->rawResults['results'] : [], fn ($result) => new Pa11yResult($result));
     }
 
     public function getAllErrors(): array
@@ -90,11 +91,11 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getResultsOfUrl(string $url): Pa11yResult
     {
-        return new Pa11yResult($this->rawResults['results'][$url]);
+        return new Pa11yResult(isset($this->rawResults['results'][$url]) ? $this->rawResults['results'][$url] : []);
     }
 
     public function getUrls(): array
     {
-        return array_keys($this->rawResults['results']);
+        return array_keys(isset($this->rawResults['results']) ? $this->rawResults['results'] : []);
     }
 }
