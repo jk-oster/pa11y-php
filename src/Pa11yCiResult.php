@@ -50,7 +50,7 @@ class Pa11yCiResult implements JsonSerializable
 
     public function getTotalIssuesCount(): int
     {
-        return  isset($this->rawResults['errors']) ? $this->rawResults['errors'] : 0;
+        return isset($this->rawResults['errors']) ? $this->rawResults['errors'] : 0;
     }
 
     public function getTotalErrorsCount(): int
