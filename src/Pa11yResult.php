@@ -19,7 +19,8 @@ class Pa11yResult implements JsonSerializable
     //     "context": "<span class=\"w-full inline-flex items-center justify-center self-stretch px-4 py-2 text-sm text-white text-center font-bold uppercase bg-red-500 ring-1 ring-red-500 ring-offset-1 ring-offset-red-500 transform transition-transform group-hover:-transla...",
     //     "selector": "html > body > div:nth-child(2) > section > div > div:nth-child(4) > div > a:nth-child(1) > span",
     //     "runner": "htmlcs",
-    //     "runnerExtras": {}
+    //     "runnerExtras": {},
+    //     "url": "https://example.com" // custom added field - only available using this packages custom reporter!
     //   }
     // ]
 
@@ -32,12 +33,12 @@ class Pa11yResult implements JsonSerializable
 
     public function json(): string
     {
-        return json_encode($this->rawResults, JSON_PRETTY_PRINT);
+        return json_encode($this->rawResults ?? [], JSON_PRETTY_PRINT);
     }
 
     public function jsonSerialize(): mixed
     {
-        return json_encode($this->rawResults);
+        return json_encode($this->rawResults ?? []);
     }
 
     public function saveJson(string $path): self
@@ -49,27 +50,32 @@ class Pa11yResult implements JsonSerializable
 
     public function getRunner(): string
     {
-        return $this->rawResults[0]['runner'];
+        return isset($this->rawResults[0]['runner']) ? $this->rawResults[0]['runner'] : '';
+    }
+
+    public function getUrl(): string
+    {
+        return isset($this->rawResults[0]['url']) ? $this->rawResults[0]['url'] : '';
     }
 
     public function getTotalIssueCount(): int
     {
-        return count($this->rawResults);
+        return count($this->rawResults ?? []);
     }
 
     public function getErrors(): array
     {
-        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'error');
+        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'error');
     }
 
     public function getWarnings(): array
     {
-        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'warning');
+        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'warning');
     }
 
     public function getNotices(): array
     {
-        return Arr::where($this->rawResults, fn ($issue) => $issue['type'] === 'notice');
+        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'notice');
     }
 
     public function getErrorsCount(): int
@@ -89,7 +95,7 @@ class Pa11yResult implements JsonSerializable
 
     public function getIssues(?string $code): ?array
     {
-        return $code === null ? $this->rawResults : Arr::where($this->rawResults, fn ($issue) => $issue['code'] === $code);
+        return $code === null ? $this->rawResults : Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code);
     }
 
     public function getIssueCount(?string $code): int
@@ -101,7 +107,7 @@ class Pa11yResult implements JsonSerializable
     {
         $result = [];
 
-        foreach ($this->rawResults as $issue) {
+        foreach (($this->rawResults ?? []) as $issue) {
             $result[$issue['code']][] = $issue;
         }
 
