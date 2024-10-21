@@ -1,5 +1,15 @@
 {
+    "scripts": {
+        "docs:dev": "vuepress dev docs",
+        "docs:build": "vuepress build docs"
+    },
     "dependencies": {
         "pa11y-ci": "github:jk-oster/pa11y-ci"
+    },
+    "devDependencies": {
+        "@vuepress/bundler-vite": "^2.0.0-rc.18",
+        "@vuepress/theme-default": "^2.0.0-rc.56",
+        "sass-embedded": "^1.80.3",
+        "vuepress": "^2.0.0-rc.18"
     }
 }

@@ -1,4 +1,10 @@
-# A package to create accessibility report
+---
+title: "Docs"
+description: "Create accessibility reports using pa11y in php."
+sidebar: auto
+---
+
+# A package to create accessibility reports in php
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/jk-oster/pa11y-php.svg?style=flat-square)](https://packagist.org/packages/jk-oster/pa11y-php)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/jk-oster/pa11y-php/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/jk-oster/pa11y-php/actions?query=workflow%3Arun-tests+branch%3Amain)
