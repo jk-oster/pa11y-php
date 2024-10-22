@@ -1,12 +1,31 @@
 ---
 title: "Docs"
 description: "Create accessibility reports using pa11y in php."
-sidebar: auto
+sidebar: "heading"
+footer: "Made with ❤️ by <a href='https://jakobosterberger.com'>Jakob Osterberger</a> (c) 2024"
+footerHtml: true
+actions:
+  - text: Get Started
+    link: "/#installation-setup"
+    type: primary
+  - text: Usage Guide
+    link: "/usage.html"
+    type: secondary
+features:
+  - title: Simplicity
+    details: Easy to use fluent API for creating trends and reports with sensible defaults.
+next:
+  text: Usage Guide
+  link: /usage.html
 ---
+
+::: warning
+🏗️ This Page Under Construction and not ready for use yet!
+:::
 
 ## Introduction
 
-Pa11y is an open-source, automated accessibility reporting tool. It's audits provide insights
+[Pa11y](https://pa11y.org/) is an open-source, automated accessibility reporting tool. It's audits provide insights
 into accessibility issues existing on a webpage.
 
 This package makes it easy to run Pa11y using PHP. Here is an example of how to get the number of
@@ -26,7 +45,7 @@ Here is how you can get the details of the first error on the page:
 
 ## Requirements
 
-The pa11y-php package requires **PHP 8.1+**, and **node 16 or higher**.
+The ``jk-oster/pa11y-php`` package requires **PHP 8.1+**, and **node 16 or higher**.
 
 ## Installation & setup
 
