@@ -1,7 +1,6 @@
 ---
-title: "Docs"
+title: "Getting Started"
 description: "Create accessibility reports using pa11y in php."
-sidebar: "heading"
 footer: "Made with ❤️ by <a href='https://jakobosterberger.com'>Jakob Osterberger</a> (c) 2024"
 footerHtml: true
 actions:
