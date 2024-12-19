@@ -20,7 +20,6 @@ class Pa11yResult implements JsonSerializable
     //     "selector": "html > body > div:nth-child(2) > section > div > div:nth-child(4) > div > a:nth-child(1) > span",
     //     "runner": "htmlcs",
     //     "runnerExtras": {},
-    //     "url": "https://example.com" // custom added field - only available using this packages custom reporter!
     //   }
     // ]
 
@@ -29,6 +28,11 @@ class Pa11yResult implements JsonSerializable
         $this->rawResults = $rawResults;
 
         return $this;
+    }
+
+    public function getRawResults(): array
+    {
+        return $this->rawResults;
     }
 
     public function json(): string

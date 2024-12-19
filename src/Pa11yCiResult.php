@@ -16,6 +16,11 @@ class Pa11yCiResult implements JsonSerializable
         return $this;
     }
 
+    public function getRawResults(): array
+    {
+        return $this->rawResults;
+    }
+
     public function json(): string
     {
         return json_encode($this->rawResults ?? [], JSON_PRETTY_PRINT);
