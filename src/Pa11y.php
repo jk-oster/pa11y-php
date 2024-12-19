@@ -18,7 +18,7 @@ class Pa11y
         return new Pa11y($url);
     }
 
-    protected array $requiredOptions = [
+    const REQUIRED_OPTIONS = [
         'reporter' => 'json',
         'config' => './pa11y.config.json',
         'level' => 'none',
@@ -110,7 +110,7 @@ class Pa11y
      */
     public function commandArgs(): array
     {
-        $options = array_merge($this->options, $this->requiredOptions);
+        $options = array_merge($this->options, self::REQUIRED_OPTIONS);
 
         foreach ($options as $option => $value) {
             $command[] = '--'.$option;

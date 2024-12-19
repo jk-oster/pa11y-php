@@ -29,7 +29,7 @@ class Pa11yCi
         return (new Pa11yCi([]))->sitemap($url);
     }
 
-    protected array $defaultConfig = [
+    const DEFAULT_CONFIG = [
         'defaults' => [
             // pa11y options
             'timeout' => 10000,
@@ -261,7 +261,7 @@ class Pa11yCi
 
     public function run(): Pa11yCiResult
     {
-        $config = json_encode(array_merge_recursive($this->defaultConfig, $this->options));
+        $config = json_encode(array_merge_recursive(self::DEFAULT_CONFIG, $this->options));
 
         $command = [
             (new ExecutableFinder)->find('pa11y-ci', 'pa11y-ci', [
