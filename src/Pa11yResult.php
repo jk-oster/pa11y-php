@@ -4,24 +4,11 @@ namespace JkOster\Pa11y;
 
 use Illuminate\Support\Arr;
 use JsonSerializable;
+use ArrayAccess;
 
-class Pa11yResult implements JsonSerializable
+class Pa11yResult implements JsonSerializable, ArrayAccess
 {
     public function __construct(protected array $rawResults = []) {}
-
-    // rawResults JSON Output Example
-    // [
-    //   {
-    //     "code": "WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail",
-    //     "type": "error",
-    //     "typeCode": 1,
-    //     "message": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.8:1. Recommendation:  change background to #e8211b.",
-    //     "context": "<span class=\"w-full inline-flex items-center justify-center self-stretch px-4 py-2 text-sm text-white text-center font-bold uppercase bg-red-500 ring-1 ring-red-500 ring-offset-1 ring-offset-red-500 transform transition-transform group-hover:-transla...",
-    //     "selector": "html > body > div:nth-child(2) > section > div > div:nth-child(4) > div > a:nth-child(1) > span",
-    //     "runner": "htmlcs",
-    //     "runnerExtras": {},
-    //   }
-    // ]
 
     public function setRawResults(array $rawResults): self
     {
@@ -35,6 +22,21 @@ class Pa11yResult implements JsonSerializable
         return $this->rawResults;
     }
 
+    /**
+     * @example
+     * [
+     *   {
+     *     "code": "WCAG2AA.Principle1.Guideline1_4.1_4_3.G18.Fail",
+     *     "type": "error",
+     *     "typeCode": 1,
+     *     "message": "This element has insufficient contrast at this conformance level. Expected a contrast ratio of at least 4.5:1, but text in this element has a contrast ratio of 3.8:1. Recommendation:  change background to #e8211b.",
+     *     "context": "<span class=\"w-full inline-flex items-center justify-center self-stretch px-4 py-2 text-sm text-white text-center font-bold uppercase bg-red-500 ring-1 ring-red-500 ring-offset-1 ring-offset-red-500 transform transition-transform group-hover:-transla...",
+     *     "selector": "html > body > div:nth-child(2) > section > div > div:nth-child(4) > div > a:nth-child(1) > span",
+     *     "runner": "htmlcs",
+     *     "runnerExtras": {},
+     *   }
+     * ]
+     */
     public function json(): string
     {
         return json_encode($this->rawResults ?? [], JSON_PRETTY_PRINT);
@@ -57,29 +59,33 @@ class Pa11yResult implements JsonSerializable
         return isset($this->rawResults[0]['runner']) ? $this->rawResults[0]['runner'] : '';
     }
 
-    public function getUrl(): string
-    {
-        return isset($this->rawResults[0]['url']) ? $this->rawResults[0]['url'] : '';
-    }
-
     public function getTotalIssueCount(): int
     {
         return count($this->rawResults ?? []);
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getErrors(): array
     {
-        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'error');
+        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'error'), fn ($issue) => new Pa11yIssue($issue));
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getWarnings(): array
     {
-        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'warning');
+        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'warning'), fn ($issue) => new Pa11yIssue($issue));
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getNotices(): array
     {
-        return Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'notice');
+        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'notice'), fn ($issue) => new Pa11yIssue($issue));
     }
 
     public function getErrorsCount(): int
@@ -97,9 +103,12 @@ class Pa11yResult implements JsonSerializable
         return count($this->getNotices());
     }
 
-    public function getIssues(?string $code): ?array
+    /**
+     * @return array<int, Pa11yIssue>
+     */
+    public function getIssues(?string $code = null): ?array
     {
-        return $code === null ? $this->rawResults : Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code);
+        return $code === null ? $this->rawResults :  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code), fn ($issue) => new Pa11yIssue($issue));
     }
 
     public function getIssueCount(?string $code): int
@@ -107,14 +116,39 @@ class Pa11yResult implements JsonSerializable
         return count($this->getIssues($code));
     }
 
+    /**
+     * @return array<string, array<int, Pa11yIssue>>
+     */
     public function getGroupedIssues(): array
     {
         $result = [];
 
         foreach (($this->rawResults ?? []) as $issue) {
-            $result[$issue['code']][] = $issue;
+            $result[$issue['code']][] = new Pa11yIssue($issue);
         }
 
         return $result;
+    }
+
+    
+    // ArrayAccess methods
+    public function offsetExists($offset): bool
+    {
+        return isset($this->rawResults[$offset]);
+    }
+
+    public function offsetGet($offset): mixed
+    {
+        return $this->rawResults[$offset] ?? null;
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        $this->rawResults[$offset] = $value;
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->rawResults[$offset]);
     }
 }

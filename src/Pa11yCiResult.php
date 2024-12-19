@@ -4,8 +4,9 @@ namespace JkOster\Pa11y;
 
 use Illuminate\Support\Arr;
 use JsonSerializable;
+use ArrayAccess;
 
-class Pa11yCiResult implements JsonSerializable
+class Pa11yCiResult implements JsonSerializable, ArrayAccess
 {
     public function __construct(protected array $rawResults = []) {}
 
@@ -73,25 +74,44 @@ class Pa11yCiResult implements JsonSerializable
         return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => $acc + $result->getNoticesCount(), 0);
     }
 
+    /**
+     * @return array<string, Pa11yResult>
+     */
     public function getResultsGroupedByUrl(): array
     {
-
         return Arr::map(isset($this->rawResults['results']) ? $this->rawResults['results'] : [], fn ($result) => new Pa11yResult($result));
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getAllErrors(): array
     {
         return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getErrors()), []);
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getAllWarnings(): array
     {
         return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getWarnings()), []);
     }
 
+    /**
+     * @return array<int, Pa11yIssue>
+     */
     public function getAllNotices(): array
     {
         return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getNotices()), []);
+    }
+
+    /**
+     * @return array<int, Pa11yIssue>
+     */
+    public function getAllIssues(): array
+    {
+        return array_reduce($this->getResultsGroupedByUrl(), fn ($acc, $result) => array_merge($acc, $result->getIssues()), []);
     }
 
     public function getResultsOfUrl(string $url): Pa11yResult
@@ -99,8 +119,33 @@ class Pa11yCiResult implements JsonSerializable
         return new Pa11yResult(isset($this->rawResults['results'][$url]) ? $this->rawResults['results'][$url] : []);
     }
 
+    /**
+     * @return array<int, string>
+     */
     public function getUrls(): array
     {
         return array_keys(isset($this->rawResults['results']) ? $this->rawResults['results'] : []);
+    }
+
+    
+    // ArrayAccess methods
+    public function offsetExists($offset): bool
+    {
+        return isset($this->rawResults[$offset]);
+    }
+
+    public function offsetGet($offset): mixed
+    {
+        return $this->rawResults[$offset] ?? null;
+    }
+
+    public function offsetSet($offset, $value): void
+    {
+        $this->rawResults[$offset] = $value;
+    }
+
+    public function offsetUnset($offset): void
+    {
+        unset($this->rawResults[$offset]);
     }
 }
