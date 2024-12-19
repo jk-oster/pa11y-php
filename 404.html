@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.19" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const userMode = localStorage.getItem('vuepress-color-scheme')
+      const systemDarkMode =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (userMode === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (userMode === 'dark' || systemDarkMode) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <title>Pa11y-PHP</title><meta name="description" content="A PHP wrapper for Pa11y. Easily generate accessibility reports for any page with PHP.">
+    <link rel="preload" href="/pa11y-php/assets/style-By8e8m6J.css" as="style"><link rel="stylesheet" href="/pa11y-php/assets/style-By8e8m6J.css">
+    <link rel="modulepreload" href="/pa11y-php/assets/app-C5brJ7eS.js"><link rel="modulepreload" href="/pa11y-php/assets/404.html-BxgChUrg.js">
+    <link rel="prefetch" href="/pa11y-php/assets/index.html-DHwA-o4V.js" as="script"><link rel="prefetch" href="/pa11y-php/assets/usage.html-zz2BJg_7.js" as="script"><link rel="prefetch" href="/pa11y-php/assets/setupDevtools-7MC2TMWH-B2FD1qDZ.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-d05e48e6><main class="page" data-v-d05e48e6><div class="theme-default-content" vp-content data-v-d05e48e6><h1 data-v-d05e48e6>404</h1><blockquote data-v-d05e48e6>How did we get here?</blockquote><a class="route-link" href="/pa11y-php/" data-v-d05e48e6>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/pa11y-php/assets/app-C5brJ7eS.js" defer></script>
+  </body>
+</html>
