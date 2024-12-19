@@ -108,7 +108,7 @@ class Pa11yResult implements ArrayAccess, JsonSerializable
      */
     public function getIssues(?string $code = null): ?array
     {
-        return $code === null ? $this->rawResults : Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code), fn ($issue) => new Pa11yIssue($issue));
+        return Arr::map($code === null ? $this->rawResults : Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code), fn ($issue) => new Pa11yIssue($issue));
     }
 
     public function getIssueCount(?string $code): int
