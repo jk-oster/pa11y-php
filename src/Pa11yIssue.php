@@ -5,7 +5,7 @@ namespace JkOster\Pa11y;
 use ArrayAccess;
 use JsonSerializable;
 
-class Pa11yCiResult implements ArrayAccess, JsonSerializable
+class Pa11yIssue implements JsonSerializable, ArrayAccess
 {
     public function __construct(protected array $rawIssue = []) {}
 
