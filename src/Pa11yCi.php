@@ -266,6 +266,8 @@ class Pa11yCi
         $command = [
             (new ExecutableFinder)->find('pa11y-ci', 'pa11y-ci', [
                 __DIR__.'/../node_modules/bin',
+                __DIR__.'/../../node_modules/bin',
+                __DIR__.'/../../../node_modules/bin',
                 '/usr/local/bin',
                 '/opt/homebrew/bin',
             ]),
