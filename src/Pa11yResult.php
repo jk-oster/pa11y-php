@@ -10,13 +10,14 @@ class Pa11yResult implements ArrayAccess, JsonSerializable
 {
     protected ?string $errorMessage = null;
 
-    public function __construct(protected array $rawResults = []) {
+    public function __construct(protected array $rawResults = [])
+    {
         $this->setRawResults($rawResults);
     }
 
     public function setRawResults(array $rawResults): self
     {
-        if(count($rawResults) === 1 && isset($rawResults[0]) && array_key_exists('message', $rawResults[0]) && !array_key_exists('code', $rawResults[0])) {
+        if (count($rawResults) === 1 && isset($rawResults[0]) && array_key_exists('message', $rawResults[0]) && ! array_key_exists('code', $rawResults[0])) {
             $this->rawResults = [];
             $this->errorMessage = $rawResults[0]['message'];
         } else {
