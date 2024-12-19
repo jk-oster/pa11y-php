@@ -8,13 +8,27 @@ use JsonSerializable;
 
 class Pa11yResult implements ArrayAccess, JsonSerializable
 {
-    public function __construct(protected array $rawResults = []) {}
+    protected ?string $errorMessage = null;
+
+    public function __construct(protected array $rawResults = []) {
+        $this->setRawResults($rawResults);
+    }
 
     public function setRawResults(array $rawResults): self
     {
-        $this->rawResults = $rawResults;
+        if(count($rawResults) === 1 && isset($rawResults[0]) && array_key_exists('message', $rawResults[0]) && !array_key_exists('code', $rawResults[0])) {
+            $this->rawResults = [];
+            $this->errorMessage = $rawResults[0]['message'];
+        } else {
+            $this->rawResults = $rawResults;
+        }
 
         return $this;
+    }
+
+    public function getErrorMessage(): ?string
+    {
+        return $this->errorMessage;
     }
 
     public function getRawResults(): array
