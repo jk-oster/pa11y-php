@@ -1,14 +1,13 @@
 <?php
 
-
 namespace JkOster\Pa11y;
 
 use ArrayAccess;
 use JsonSerializable;
 
-class Pa11yCiResult implements JsonSerializable, ArrayAccess
+class Pa11yCiResult implements ArrayAccess, JsonSerializable
 {
-    public function __construct(protected array $rawIssue = []) {}      
+    public function __construct(protected array $rawIssue = []) {}
 
     /**
      * @example

@@ -2,11 +2,11 @@
 
 namespace JkOster\Pa11y;
 
+use ArrayAccess;
 use Illuminate\Support\Arr;
 use JsonSerializable;
-use ArrayAccess;
 
-class Pa11yResult implements JsonSerializable, ArrayAccess
+class Pa11yResult implements ArrayAccess, JsonSerializable
 {
     public function __construct(protected array $rawResults = []) {}
 
@@ -69,7 +69,7 @@ class Pa11yResult implements JsonSerializable, ArrayAccess
      */
     public function getErrors(): array
     {
-        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'error'), fn ($issue) => new Pa11yIssue($issue));
+        return Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'error'), fn ($issue) => new Pa11yIssue($issue));
     }
 
     /**
@@ -77,7 +77,7 @@ class Pa11yResult implements JsonSerializable, ArrayAccess
      */
     public function getWarnings(): array
     {
-        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'warning'), fn ($issue) => new Pa11yIssue($issue));
+        return Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'warning'), fn ($issue) => new Pa11yIssue($issue));
     }
 
     /**
@@ -85,7 +85,7 @@ class Pa11yResult implements JsonSerializable, ArrayAccess
      */
     public function getNotices(): array
     {
-        return  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'notice'), fn ($issue) => new Pa11yIssue($issue));
+        return Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['type'] === 'notice'), fn ($issue) => new Pa11yIssue($issue));
     }
 
     public function getErrorsCount(): int
@@ -108,7 +108,7 @@ class Pa11yResult implements JsonSerializable, ArrayAccess
      */
     public function getIssues(?string $code = null): ?array
     {
-        return $code === null ? $this->rawResults :  Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code), fn ($issue) => new Pa11yIssue($issue));
+        return $code === null ? $this->rawResults : Arr::map(Arr::where($this->rawResults ?? [], fn ($issue) => $issue['code'] === $code), fn ($issue) => new Pa11yIssue($issue));
     }
 
     public function getIssueCount(?string $code): int
@@ -130,7 +130,6 @@ class Pa11yResult implements JsonSerializable, ArrayAccess
         return $result;
     }
 
-    
     // ArrayAccess methods
     public function offsetExists($offset): bool
     {

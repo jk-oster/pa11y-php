@@ -2,11 +2,11 @@
 
 namespace JkOster\Pa11y;
 
+use ArrayAccess;
 use Illuminate\Support\Arr;
 use JsonSerializable;
-use ArrayAccess;
 
-class Pa11yCiResult implements JsonSerializable, ArrayAccess
+class Pa11yCiResult implements ArrayAccess, JsonSerializable
 {
     public function __construct(protected array $rawResults = []) {}
 
@@ -127,7 +127,6 @@ class Pa11yCiResult implements JsonSerializable, ArrayAccess
         return array_keys(isset($this->rawResults['results']) ? $this->rawResults['results'] : []);
     }
 
-    
     // ArrayAccess methods
     public function offsetExists($offset): bool
     {
