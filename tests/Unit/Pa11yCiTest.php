@@ -16,13 +16,13 @@ class Pa11yCiTest extends TestCase
         parent::setUp();
     }
 
-    public function testPa11yCiIntallation()
+    public function test_pa11y_ci_intallation()
     {
         $result = shell_exec('pa11y-ci --version');
         $this->assertNotEmpty($result);
     }
 
-    public function testPa11yCi()
+    public function test_pa11y_ci()
     {
         $results = Pa11yCi::fromUrls(['https://laravel.com'])->run();
         $this->assertInstanceOf(Pa11yCiResult::class, $results);
@@ -41,7 +41,7 @@ class Pa11yCiTest extends TestCase
         $this->assertNotEmpty($json);
     }
 
-    public function testPa11yCiWithSitemap()
+    public function test_pa11y_ci_with_sitemap()
     {
         $command = Pa11yCi::fromSitemap('https://laravel.com/sitemap_pages.xml');
         $results = $command->run();
@@ -61,7 +61,7 @@ class Pa11yCiTest extends TestCase
         $this->assertNotEmpty($json);
     }
 
-    public function testPa11yCiWithJsonConfig()
+    public function test_pa11y_ci_with_json_config()
     {
         $command = Pa11yCi::fromUrls(['https://laravel.com']);
         // ->config('{"threshold": 99999999, "urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none","includeWarnings": true,"includeNotices": true, "reporters": ["json"]}}');
@@ -83,7 +83,7 @@ class Pa11yCiTest extends TestCase
         $this->assertNotEmpty($json);
     }
 
-    public function testPa11yCiWithJsonConfigAndFileOutput()
+    public function test_pa11y_ci_with_json_config_and_file_output()
     {
         $command = Pa11yCi::fromUrls(['https://laravel.com']);
         // ->config('{"threshold": 99999999,"urls": ["https://studiomitte.com"],"defaults":{"chromeLaunchConfig": {"args": ["--no-sandbox"]},"level": "none", "includeWarnings": true,"includeNotices": true, "reporters": [["json", {"fileName": "./results.json"}]]}}');

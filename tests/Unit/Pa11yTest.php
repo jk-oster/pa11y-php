@@ -16,13 +16,13 @@ class Pa11yTest extends TestCase
         parent::setUp();
     }
 
-    public function testPa11yIntallation()
+    public function test_pa11y_intallation()
     {
         $result = shell_exec('pa11y --version');
         $this->assertNotEmpty($result);
     }
 
-    public function testPa11y()
+    public function test_pa11y()
     {
         $results = Pa11y::fromUrl('https://laravel.com')->run();
         $this->assertInstanceOf(Pa11yResult::class, $results);
@@ -40,7 +40,7 @@ class Pa11yTest extends TestCase
         $this->assertNotEmpty($json);
     }
 
-    public function testPa11yMultipleUrls()
+    public function test_pa11y_multiple_urls()
     {
         $results = [
             Pa11y::fromUrl('https://laravel.com')->run(),
