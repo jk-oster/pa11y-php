@@ -11,7 +11,7 @@ class Pa11yCiResult implements ArrayAccess, JsonSerializable
     public function __construct(
         protected array $rawResults,
         protected array $config = [],
-        protected string|null $outputFilePath = null
+        protected ?string $outputFilePath = null
     ) {}
 
     public function setRawResults(array $rawResults): self
@@ -48,7 +48,7 @@ class Pa11yCiResult implements ArrayAccess, JsonSerializable
         return $this->config;
     }
 
-    public function getOutputFilePath(): string|null
+    public function getOutputFilePath(): ?string
     {
         return $this->outputFilePath;
     }

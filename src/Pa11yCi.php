@@ -18,7 +18,8 @@ class Pa11yCi
     protected array $options = [];
 
     protected bool $deleteTempFiles = true;
-    protected string|null $outputFilePath = null;
+
+    protected ?string $outputFilePath = null;
 
     public static function fromUrls(array $urls): Pa11yCi
     {
@@ -257,6 +258,7 @@ class Pa11yCi
                 $default[$key] = $value;
             }
         }
+
         return $default;
     }
 
