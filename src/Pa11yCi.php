@@ -292,7 +292,7 @@ class Pa11yCi
                 '/opt/homebrew/bin',
             ]),
             '--config',
-            $config,
+            $jsonConfig,
             '--json',
         ];
 
