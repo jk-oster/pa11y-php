@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="generator" content="VuePress 2.0.0-rc.20" />
+    <style>
+      :root {
+        --vp-c-bg: #fff;
+      }
+
+      [data-theme='dark'] {
+        --vp-c-bg: #1b1b1f;
+      }
+
+      html,
+      body {
+        background-color: var(--vp-c-bg);
+      }
+    </style>
+    <script>
+      const useChoice = localStorage.getItem('vuepress-color-scheme')
+      const systemStatus =
+        'matchMedia' in window
+          ? window.matchMedia('(prefers-color-scheme: dark)').matches
+          : false
+
+      if (useChoice === 'light') {
+        document.documentElement.dataset.theme = 'light'
+      } else if (useChoice === 'dark' || systemStatus) {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+    <title>Pa11y-PHP</title><meta name="description" content="A PHP wrapper for Pa11y. Easily generate accessibility reports for any page with PHP.">
+    <link rel="preload" href="/assets/style-JxBXTHvG.css" as="style"><link rel="stylesheet" href="/assets/style-JxBXTHvG.css">
+    <link rel="modulepreload" href="/assets/app-Df6cFUu3.js"><link rel="modulepreload" href="/assets/404.html-Cm9m2d-s.js">
+    <link rel="prefetch" href="/assets/index.html-BFqNWWgk.js" as="script"><link rel="prefetch" href="/assets/usage.html-7GGcixjs.js" as="script"><link rel="prefetch" href="/assets/setupDevtools-QXEOFQJV-Cym_DgxB.js" as="script">
+  </head>
+  <body>
+    <div id="app"><!--[--><div class="vp-theme-container" vp-container data-v-a4eb41ba><main class="page" data-v-a4eb41ba><div vp-content data-v-a4eb41ba><h1 data-v-a4eb41ba>404</h1><blockquote data-v-a4eb41ba>There&#39;s nothing here.</blockquote><a class="route-link" href="/" data-v-a4eb41ba>Take me home</a></div></main></div><!--[--><!----><!--]--><!--]--></div>
+    <script type="module" src="/assets/app-Df6cFUu3.js" defer></script>
+  </body>
+</html>
