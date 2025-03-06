@@ -18,6 +18,7 @@ class Pa11yCi
     protected array $options = [];
 
     protected bool $deleteTempFiles = true;
+    protected string|null $outputFilePath = null;
 
     public static function fromUrls(array $urls): Pa11yCi
     {
@@ -221,6 +222,8 @@ class Pa11yCi
             $path = tempnam(sys_get_temp_dir(), 'pa11y_');
         }
 
+        $this->outputFilePath = $path;
+
         return $this->setOption('defaults.reporters', [
             ['json', ['fileName' => $path]],
         ]);
@@ -245,9 +248,21 @@ class Pa11yCi
         return $this;
     }
 
+    private function mergeConfigs(array $default, array $custom): array
+    {
+        foreach ($custom as $key => $value) {
+            if (isset($default[$key]) && is_array($default[$key]) && is_array($value)) {
+                $default[$key] = $this->mergeConfigs($default[$key], $value);
+            } else {
+                $default[$key] = $value;
+            }
+        }
+        return $default;
+    }
+
     public function config(array $config): self
     {
-        $this->options = array_merge_recursive($this->options, $config);
+        $this->options = $this->mergeConfigs($this->options, $config);
 
         return $this;
     }
@@ -261,13 +276,16 @@ class Pa11yCi
 
     public function run(): Pa11yCiResult
     {
-        $config = json_encode(array_merge_recursive(self::DEFAULT_CONFIG, $this->options));
+        $config = $this->mergeConfigs(self::DEFAULT_CONFIG, $this->options);
+        $jsonConfig = json_encode($config);
 
         $command = [
             (new ExecutableFinder)->find('pa11y-ci', 'pa11y-ci', [
+                __DIR__.'/node_modules/bin',
                 __DIR__.'/../node_modules/bin',
                 __DIR__.'/../../node_modules/bin',
                 __DIR__.'/../../../node_modules/bin',
+                __DIR__.'/../../../../node_modules/bin',
                 '/usr/local/bin',
                 '/opt/homebrew/bin',
             ]),
@@ -311,6 +329,6 @@ class Pa11yCi
             throw CouldNotReadOutputJson::from(implode(' ', $command), $output);
         }
 
-        return new Pa11yCiResult($result);
+        return new Pa11yCiResult($result, $config, $this->outputFilePath);
     }
 }

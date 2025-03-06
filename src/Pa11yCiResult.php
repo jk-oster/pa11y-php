@@ -8,7 +8,11 @@ use JsonSerializable;
 
 class Pa11yCiResult implements ArrayAccess, JsonSerializable
 {
-    public function __construct(protected array $rawResults = []) {}
+    public function __construct(
+        protected array $rawResults,
+        protected array $config = [],
+        protected string|null $outputFilePath = null
+    ) {}
 
     public function setRawResults(array $rawResults): self
     {
@@ -37,6 +41,16 @@ class Pa11yCiResult implements ArrayAccess, JsonSerializable
         file_put_contents($path, $this->json());
 
         return $this;
+    }
+
+    public function getConfig(): array
+    {
+        return $this->config;
+    }
+
+    public function getOutputFilePath(): string|null
+    {
+        return $this->outputFilePath;
     }
 
     public function getUrlsCount(): int
